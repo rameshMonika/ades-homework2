@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<!-- saved from url=(0099)https://esp.sp.edu.sg/bbcswebdav/pid-1799723-dt-content-rid-8546103_2/courses/ST0503/viewUsers.html -->
+<html lang="en">
+
+<head>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SP Games</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</head>
+
+
+<body data-new-gr-c-s-check-loaded="14.991.0" data-gr-ext-installed="">
+    <div class="container">
+    </div>
+    <script src="./viewUser_files/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script src="./viewUser_files/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="./viewUser_files/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+
+
+        function loadAllUser() {
+            // data extraction main step 1/3
+            var queryParams = new URLSearchParams(window.location.search);
+            console.log("--------Query Params----------")
+            console.log("Query Param (source): " + window.location.search)
+            console.log("Query Param (extraction): " + queryParams)
+
+            if (!queryParams.has("id")) {
+
+
+                console.log("Query params (gameid) is missing")
+                // and you will show these erorrs. 
+                $('#messages').html("Invalid Query Params.Page is unable to load")
+            }
+            else {
+
+
+                var id = queryParams.get("id")
+                console.log("Query params (id):" + queryParams.get("id"))
+
+
+
+                $.ajax({
+
+                    url: 'http://localhost:3000/toDos/' + id,
+                    type: 'GET',
+
+                    dataType: 'json',
+                    success: function (data, textStatus, xhr) {
+                        console.log("-------response data------")
+                        console.log(data)
+
+                        console.log(data.length)
+
+
+                        $('#task').html(data[0].task);
+
+                        $('#difficulityLvl').html(data[0].difficulityLvl);
+
+
+
+
+
+
+
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error in Operation');
+
+                        console.log(xhr);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+
+                        console.log(xhr.responseText);
+                        console.log(xhr.status);
+
+                    }
+                });
+
+
+
+
+
+
+
+            }
+
+
+
+        }
+
+
+
+        function deleteTask() {
+            // data extraction main step 1/3
+            var queryParams = new URLSearchParams(window.location.search);
+            console.log("--------Query Params----------")
+            console.log("Query Param (source): " + window.location.search)
+            console.log("Query Param (extraction): " + queryParams)
+
+            if (!queryParams.has("id")) {
+
+
+                console.log("Query params (gameid) is missing")
+                // and you will show these erorrs. 
+                $('#messages').html("Invalid Query Params.Page is unable to load")
+            }
+            else {
+
+
+                var id = queryParams.get("id")
+                console.log("Query params (id):" + queryParams.get("id"))
+
+
+
+                $.ajax({
+
+                    url: 'http://localhost:3000/todos/' + id,
+                    type: 'DELETE',
+
+                    dataType: 'json',
+                    success: function (data, textStatus, xhr) {
+                        console.log("-------response data------")
+                        console.log(data)
+
+                        console.log("deleted")
+
+
+
+
+
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error in Operation');
+
+                        console.log(xhr);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+
+                        console.log(xhr.responseText);
+                        console.log(xhr.status);
+
+                    }
+                });
+
+
+
+            }
+
+
+
+        }
+
+
+
+        function editTask(task, difficulityLvl) {
+            var queryParams = new URLSearchParams(window.location.search);
+            console.log("--------Query Params----------")
+            console.log("Query Param (source): " + window.location.search)
+            console.log("Query Param (extraction): " + queryParams)
+
+            if (!queryParams.has("id")) {
+
+
+                console.log("Query params (gameid) is missing")
+                // and you will show these erorrs. 
+                $('#messages').html("Invalid Query Params.Page is unable to load")
+            }
+            else {
+
+
+                var id = queryParams.get("id")
+                console.log("Query params (id):" + queryParams.get("id"))
+
+
+                const requestBody = {
+                task: task,
+                difficulityLvl: difficulityLvl
+            }
+
+            const reqBody=JSON.stringify(requestBody)
+
+                $.ajax({
+
+                    url: 'http://localhost:3000/todos/' + id,
+                    type: 'PUT',
+                    data: requestBody,
+                    dataType: 'json',
+                    success: function (data, textStatus, xhr) {
+                        console.log("-------response data------")
+                        console.log(data)
+
+                        console.log("inserted")
+
+
+
+
+
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error in Operation');
+
+                        console.log(xhr);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+
+                        console.log(xhr.responseText);
+                        console.log(xhr.status);
+
+                    }
+                });
+
+
+
+            }
+       
+      
+
+
+        }
+
+        
+
+
+
+
+        $(document).ready(function () {
+
+            loadAllUser();
+
+
+            $('#deleteTask').click(function () {
+
+
+
+                // addReview(rating, content);
+
+                deleteTask();
+
+                // prevents page from reloading
+                return false;
+
+
+            })
+
+
+            $('#editTask').click(function () {
+
+                var task = $('#task').val()
+                var difficulityLvl = $('#difficulityLvl').val()
+
+                console.log("----------Reviewww--------")
+                console.log(task)
+                console.log(difficulityLvl)
+
+                editTask(task,difficulityLvl);
+
+                // prevents page from reloading
+                return false;
+
+
+            })
+
+
+
+
+
+
+
+
+
+
+
+        });
+
+
+
+    </script>
+
+
+
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">SpGames</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link " href="http://localhost:8001/login.html">Home <span
+                            class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" href="http://localhost:8001/viewGames.html">Games</a>
+                    <a class="nav-item nav-link" href="#">About</a>
+
+                </div>
+            </div>
+        </nav>
+
+
+        <div style="margin-top: 2rem;">
+
+
+            <div id="messages">
+
+
+            </div>
+
+
+            <div id="detalis">
+
+                <!-- <h4>Task</h4>
+                <div id="title">
+
+                </div>
+              
+
+                </div>
+                <h4>Difficulity Level</h4>
+                <div id="price">
+
+                </div>
+
+                </div>
+                 -->
+
+
+
+                <form id="create-post-form" style="margin-top: 2rem;">
+                    <div class="form-group">
+                        <h5>Task</h5>
+                        <textarea class="form-control" id="task" rows="3"></textarea>
+                        <h5>Difficulity Level</h5>
+                        <textarea class="form-control" id="difficulityLvl" rows="3"></textarea>
+                    </div>
+                    <button type="submit" id="deleteTask" class="btn btn-primary">Delete</button>
+
+                    <button type="submit" id="editTask" class="btn btn-primary">Save changes</button>
+                </form>
+
+
+
+                <div id="posts">
+                    <div class="card" style="margin-top: 2rem;">
+
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</body>
+
+</html>

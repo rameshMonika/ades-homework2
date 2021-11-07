@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SP Games</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<body data-new-gr-c-s-check-loaded="14.991.0" data-gr-ext-installed="">
+    <div class="container">
+    </div>
+
+
+    <script src="./viewUser_files/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script src="./viewUser_files/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="./viewUser_files/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+
+
+
+        function createCard(cardInfo) {
+            console.log(cardInfo);
+
+
+
+
+            var card = `
+            <div class="col-sm-8">
+    <div class="card text-white bg-secondary border-info" style="margin-top: 2rem;">
+                    <div class="card-body">
+                        <p class="card-text text-white">${cardInfo.task}</p>
+                    </div>
+                    <div class="card-footer ">
+                        ${cardInfo.difficulityLvl}
+                    </div>
+                    <div class="card-footer text-muted">
+                        <a href="http://localhost:3001/todoListView.html?id=${cardInfo.id}"
+                            class="btn btn-primary">View</a>
+
+
+                    </div>
+                </div>
+                </div>`;
+
+
+            return card;
+        }
+
+
+
+        function addTask(task, difficulityLvl) {
+
+
+
+            const requestBody = {
+                task: task,
+                difficulityLvl: difficulityLvl
+            }
+
+            const reqBody = JSON.stringify(requestBody)
+
+
+
+            console.log("---------- ajax ............");
+
+            console.log(reqBody);
+
+
+
+
+            $.ajax({
+
+                url: `http://localhost:3000/todos/`,
+                type: 'POST',
+                // data: JSON.stringify(data2),
+                data: reqBody,
+
+                contentType: "application/json; charset=utf-8",
+
+
+
+
+                dataType: 'json',
+
+                success: function (data, textStatus, xhr) {
+                    console.log(reqBody)
+
+                    console.log("============")
+
+                    console.log("SUCCESS: " + data);
+                    const post = data
+
+                    const postHtml = `
+                    <div class="col-sm-8">
+    <div class="card text-white bg-secondary border-info" style="margin-top: 2rem;">
+                    <div class="card-body">
+                        <p class="card-text text-white">${data.task}</p>
+                    </div>
+                    <div class="card-footer ">
+                        ${data.difficulityLvl}
+                    </div>
+                    <div class="card-footer text-muted">
+                        <a href="http://localhost:3001/todoListView.html?id=${data.id}"
+                            class="btn btn-primary">View</a>
+
+
+                    </div>
+                </div>
+                </div>
+                    `;
+
+
+                    // console.log("---------Card INfo data pack------------")
+                    // console.log(cardInfo);
+                    // console.log(cardInfo.id);
+                    // var newCard = createCard(cardInfo);
+
+                    $('#users').prepend(postHtml);
+
+
+
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation');
+
+                    console.log(xhr);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+
+                    console.log(xhr.responseText);
+                    console.log(xhr.status);
+
+                    if (xhr.status == 403) {
+                        $('#reviewMsg').html("Please login to post a review!")
+                    }
+
+                    if (xhr.status == 401) {
+                        $('#reviewMsg').html("You an admin cannot post review!")
+                    }
+                }
+            });
+
+
+
+
+
+        }
+
+
+
+        function loadAllGames() {
+
+
+
+            axios.get(`http://localhost:3000/toDos/`)
+                .then(response => {
+                    // $('#msg').html('User added successfully!');
+
+                    console.log("responseeeeeeeeeee")
+                    console.log(response.data);
+                    console.log("LENGTH OF DATA:" + response.data.length)
+
+                    for (var i = 0; i < response.data.length; i++) {
+                        var toDoItem = response.data[i];
+                        // console.log("game:"+game.gameid);
+                        // console.log("title:"+game.title);
+                        // console.log("email:"+user.email);
+
+
+                        var cardInfo = {
+                            "task": toDoItem.task,
+                            "difficulityLvl": toDoItem.difficulityLvl,
+                            "id": toDoItem.id
+                        }
+
+                        console.log("---------Card INfo data pack------------")
+                        console.log(cardInfo);
+                        console.log(cardInfo.id);
+                        var newCard = createCard(cardInfo);
+
+                        $('#users').append(newCard);
+
+
+                    }
+
+
+                })
+                .catch(error => {
+                    // if (error) {
+                    console.log(error);
+                  
+                    // }
+
+
+
+                })
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+        $(document).ready(function () {
+
+
+            $('#addItem').click(function () {
+
+                var task = $('#task').val()
+                var difflvl = $('#difficulityLvl').val()
+
+                console.log("----------task new--------")
+                console.log(task)
+                console.log(difflvl)
+
+                addTask(task, difflvl);
+
+
+
+
+            })
+
+
+            loadAllGames();
+
+
+
+
+
+        });
+    </script>
+
+
+
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">SpGames</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link " href="http://localhost:8001/login.html">Home </a>
+                    <a class="nav-item nav-link active" href="http://localhost:8001/viewGames.html">Games<span
+                            class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" href="http://localhost:8001/about.html">About</a>
+
+                </div>
+            </div>
+        </nav>
+
+        <div style="margin-top: 2rem;">
+            <h1>Home</h1>
+
+
+            <form id="create-post-form" style="margin-top: 2rem;">
+                <div class="form-group">
+                    <textarea class="form-control" id="task" rows="3" placeholder="task to do"></textarea>
+
+                    <textarea class="form-control" id="difficulityLvl" rows="3"
+                        placeholder="level of difficulity"></textarea>
+                </div>
+                <button type="submit" id="addItem" class="btn btn-primary">Add New Task</button>
+            </form>
+
+
+            <div id="messages">
+
+            </div>
+            <!-- 
+            <form id="search-user-form" style="margin-top: 2rem;">
+                <div class="form-group">
+                    <textarea class="form-control" id="GamePlatform" rows="2" placeholder="Search which platform?"></textarea>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="GamePrice" rows="3" placeholder="Price of game?"></textarea>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="GameTitle" rows="3" placeholder="Title of game?"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" id="Search">Search Game</button>
+            </form> -->
+
+
+
+            <div id="users">
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</body>
+
+</html>
